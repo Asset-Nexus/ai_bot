@@ -45,24 +45,21 @@ func (nftMarketPlaceContract *NFTMarketPlaceContract) GetNFTAddressByName(name s
 	return result["0"].(ethgo.Address)
 }
 
-func (nftMarketPlaceContract *NFTMarketPlaceContract) ListItem(nftAddr string, tokenId uint, price *big.Int, chainId uint, isCrossChain bool) bool {
-	tx, txErr := nftMarketPlaceContract.Instance.Txn("listItem", common.HexToAddress(nftAddr), tokenId, price, chainId, isCrossChain)
+func (nftMarketPlaceContract *NFTMarketPlaceContract) ListItem(nftAddr ethgo.Address, tokenId uint, price *big.Int, chainId uint, isCrossChain bool) error {
+	tx, txErr := nftMarketPlaceContract.Instance.Txn("listItem", nftAddr, tokenId, price, chainId, isCrossChain)
 	if txErr != nil {
-		log.Error("Error listing item", "err", txErr)
-		return false
+		return txErr
 	}
 	err := tx.Do()
 	if err != nil {
-		log.Error("Error executing transaction", "err", err)
-		return false
+		return err
 	}
 	txInfo, waitErr := tx.Wait()
 	if waitErr != nil {
-		log.Error("Error waiting for transaction", "err", waitErr)
-		return false
+		return waitErr
 	}
 	log.Info("Listing item transaction info", "txInfo", txInfo)
-	return true
+	return nil
 }
 
 func (nftMarketPlaceContract *NFTMarketPlaceContract) BuyItem(nftAddr string, tokenId uint, destinationChainSelector uint64, receiver common.Address, isCrossChain bool) bool {

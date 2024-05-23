@@ -2,6 +2,7 @@ package cache
 
 import (
 	"context"
+	"os"
 	"time"
 
 	"github.com/go-redis/redis/v8"
@@ -15,9 +16,9 @@ var (
 // 初始化 Redis 客户端
 func InitRedis() {
 	rdb = redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379", // Redis 服务器地址
-		Password: "",               // Redis 密码
-		DB:       0,                // 使用默认数据库
+		Addr:     os.Getenv("REDIS_ADDR"), // Redis 服务器地址
+		Password: os.Getenv("REDIS_PWD"),  // Redis 密码
+		DB:       0,                       // 使用默认数据库
 	})
 }
 

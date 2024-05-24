@@ -2,6 +2,7 @@ package cache
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"time"
 
@@ -20,6 +21,13 @@ func InitRedis() {
 		Password: os.Getenv("REDIS_PWD"),  // Redis 密码
 		DB:       0,                       // 使用默认数据库
 	})
+	_, err := rdb.Ping(context.Background()).Result()
+	if err != nil {
+		//log.Error("connect to redis fail", "err", err)
+		panic(fmt.Errorf("connect to redis fail, err is %v", err))
+	} else {
+		fmt.Println("connect to redis success")
+	}
 }
 
 // 存储私钥

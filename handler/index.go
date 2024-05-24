@@ -22,7 +22,7 @@ func HandleStorePrivateKey(c *gin.Context) {
 
 	// 将私钥存储到 Redis
 	if err := cache.StorePrivateKey(req.WalletAddress, req.PrivateKey); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to store private key"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to store private key" + err.Error()})
 		return
 	}
 

@@ -25,7 +25,7 @@ func main() {
 
 	// 注册路由和处理函数
 	r.POST("/storePrivateKey", handler.HandleStorePrivateKey)
-	r.GET("/process", middlerware.HasPrivateKeyMiddleware, handler.HandleProcessRequest)
+	r.GET("/ai", middlerware.HasPrivateKeyMiddleware, handler.AiHandler)
 
 	// 启动服务器
 	r.Run(":8080")

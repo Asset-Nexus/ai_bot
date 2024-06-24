@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/log"
+	log "github.com/sirupsen/logrus"
 	"github.com/umbracle/ethgo"
 	"github.com/umbracle/ethgo/abi"
 	"github.com/umbracle/ethgo/contract"
@@ -62,7 +62,7 @@ func (nftMarketPlaceContract *NFTMarketPlaceContract) ListItem(nftAddr ethgo.Add
 	return nil
 }
 
-func (nftMarketPlaceContract *NFTMarketPlaceContract) BuyItem(nftAddr string, tokenId uint, destinationChainSelector uint64, receiver common.Address, isCrossChain bool) bool {
+func (nftMarketPlaceContract *NFTMarketPlaceContract) BuyItem(nftAddr string, tokenId uint, destinationChainSelector uint64, receiver ethgo.Address, isCrossChain bool) bool {
 	tx, txErr := nftMarketPlaceContract.Instance.Txn("buyItem", common.HexToAddress(nftAddr), tokenId, destinationChainSelector, receiver, isCrossChain)
 	if txErr != nil {
 		log.Error("Error buying item", "err", txErr)
@@ -81,5 +81,3 @@ func (nftMarketPlaceContract *NFTMarketPlaceContract) BuyItem(nftAddr string, to
 	log.Info("Buying item transaction info", "txInfo", txInfo)
 	return true
 }
-
-// 添加其他函数调用类似上面的方式
